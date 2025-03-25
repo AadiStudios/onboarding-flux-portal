@@ -6,6 +6,7 @@ import Dashboard from "@/components/onboarding/Dashboard";
 import AnimatedContainer from "@/components/ui/AnimatedContainer";
 import PersonalInfoForm from "@/components/onboarding/PersonalInfoForm";
 import BankInfoForm from "@/components/onboarding/BankInfoForm";
+import BenefitsPackageForm from "@/components/onboarding/BenefitsPackageForm";
 
 const DashboardPage = () => {
   // Scroll to top on page load
@@ -29,6 +30,7 @@ const DashboardPage = () => {
           
           <PersonalInfoForm />
           <BankInfoForm />
+          <BenefitsPackageForm />
           
           <Dashboard />
         </div>
