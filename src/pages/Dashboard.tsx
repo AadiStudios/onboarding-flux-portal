@@ -8,6 +8,7 @@ import PersonalInfoForm from "@/components/onboarding/PersonalInfoForm";
 import BankInfoForm from "@/components/onboarding/BankInfoForm";
 import BenefitsPackageForm from "@/components/onboarding/BenefitsPackageForm";
 import FamilyDetailsForm from "@/components/onboarding/FamilyDetailsForm";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const DashboardPage = () => {
   // Scroll to top on page load
@@ -29,12 +30,35 @@ const DashboardPage = () => {
             </div>
           </AnimatedContainer>
           
-          <PersonalInfoForm />
-          <FamilyDetailsForm />
-          <BankInfoForm />
-          <BenefitsPackageForm />
-          
-          <Dashboard />
+          <Tabs defaultValue="overview" className="w-full">
+            <TabsList className="grid w-full grid-cols-5">
+              <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="personal">Personal Info</TabsTrigger>
+              <TabsTrigger value="family">Family Details</TabsTrigger>
+              <TabsTrigger value="banking">Banking</TabsTrigger>
+              <TabsTrigger value="benefits">Benefits</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="overview" className="mt-6">
+              <Dashboard />
+            </TabsContent>
+            
+            <TabsContent value="personal" className="mt-6">
+              <PersonalInfoForm />
+            </TabsContent>
+            
+            <TabsContent value="family" className="mt-6">
+              <FamilyDetailsForm />
+            </TabsContent>
+            
+            <TabsContent value="banking" className="mt-6">
+              <BankInfoForm />
+            </TabsContent>
+            
+            <TabsContent value="benefits" className="mt-6">
+              <BenefitsPackageForm />
+            </TabsContent>
+          </Tabs>
         </div>
       </main>
       <Footer />
