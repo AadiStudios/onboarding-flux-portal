@@ -10,7 +10,7 @@ import BenefitsPackageForm from "@/components/onboarding/BenefitsPackageForm";
 import FamilyDetailsForm from "@/components/onboarding/FamilyDetailsForm";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, LayoutDashboard, User, Users, CreditCard, Gift, GripVertical, EyeOff, Eye } from "lucide-react";
+import { ChevronLeft, ChevronRight, LayoutDashboard, User, Users, CreditCard, Gift, GripVertical, EyeOff, Eye, Settings, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 
 const DashboardPage = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -66,93 +66,160 @@ const DashboardPage = () => {
             </div>
           </AnimatedContainer>
           
-          <Tabs defaultValue="overview" orientation="vertical" className="flex w-full gap-6">
-            <div className={`relative transition-all duration-300 ${panelHidden ? 'translate-x-[-100%] opacity-0' : 'translate-x-0 opacity-100'}`}>
-              {/* Panel Hide/Show Button */}
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setPanelHidden(!panelHidden)}
-                className="absolute -right-8 top-12 z-20 h-8 w-8 rounded-full bg-background border shadow-sm hover:bg-accent"
-              >
-                {panelHidden ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
-              </Button>
-
-              {/* Collapse Button */}
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-                className="absolute -right-3 top-4 z-10 h-6 w-6 rounded-full bg-background border shadow-sm hover:bg-accent"
-              >
-                {sidebarCollapsed ? <ChevronRight className="h-3 w-3" /> : <ChevronLeft className="h-3 w-3" />}
-              </Button>
-
-              {/* Tabs List */}
-              <TabsList 
-                className={`flex flex-col h-fit bg-background/80 backdrop-blur-sm border transition-all duration-300 ease-in-out ${
-                  sidebarCollapsed ? 'w-14 px-2' : 'w-48 px-3'
-                }`}
-              >
-                {tabItems.map((item, index) => {
+          <Tabs defaultValue="overview" orientation="vertical" className="flex w-full gap-0 relative">
+            {/* Floating Control Panel */}
+            {panelHidden && (
+              <div className="fixed left-4 top-1/2 -translate-y-1/2 z-30 bg-card/95 backdrop-blur-sm border rounded-lg shadow-lg p-2 space-y-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setPanelHidden(false)}
+                  className="h-10 w-10 hover:bg-primary/10 hover:text-primary"
+                  title="Show Panel"
+                >
+                  <PanelLeftOpen className="h-4 w-4" />
+                </Button>
+                <div className="w-px h-4 bg-border mx-auto"></div>
+                {tabItems.map((item) => {
                   const Icon = item.icon;
                   return (
-                    <div
+                    <TabsTrigger
                       key={item.value}
-                      draggable
-                      onDragStart={(e) => handleDragStart(e, index)}
-                      onDragOver={handleDragOver}
-                      onDrop={(e) => handleDrop(e, index)}
-                      className={`group relative transition-all duration-200 ${
-                        draggedIndex === index ? 'opacity-50 scale-95' : 'opacity-100 scale-100'
-                      }`}
+                      value={item.value}
+                      className="h-10 w-10 p-0 hover:bg-primary/10 hover:text-primary rounded-md"
+                      title={item.label}
                     >
-                      <TabsTrigger 
-                        value={item.value} 
-                        className={`${
-                          sidebarCollapsed ? 'w-10 h-10 p-0' : 'w-full'
-                        } justify-start hover:bg-primary/10 hover:text-primary transition-all duration-200 cursor-grab active:cursor-grabbing`}
-                        title={sidebarCollapsed ? item.label : undefined}
-                      >
-                        {!sidebarCollapsed && (
-                          <GripVertical className="h-3 w-3 mr-1 text-muted-foreground group-hover:text-primary transition-colors" />
-                        )}
-                        <Icon className={`h-4 w-4 ${sidebarCollapsed ? '' : 'mr-2'} transition-all`} />
-                        {!sidebarCollapsed && (
-                          <span className="animate-fade-in text-sm">{item.label}</span>
-                        )}
-                        
-                        {/* Tooltip for collapsed state */}
-                        {sidebarCollapsed && (
-                          <div className="absolute left-full ml-2 px-2 py-1 bg-popover text-popover-foreground text-xs rounded shadow-md opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-50">
-                            {item.label}
-                          </div>
-                        )}
-                      </TabsTrigger>
-                    </div>
+                      <Icon className="h-4 w-4" />
+                    </TabsTrigger>
                   );
                 })}
-              </TabsList>
+              </div>
+            )}
+
+            {/* Main Sidebar Panel */}
+            <div className={`relative transition-all duration-500 ease-in-out transform ${
+              panelHidden ? 'w-0 -translate-x-full opacity-0' : 'w-auto translate-x-0 opacity-100'
+            }`}>
+              
+              {/* Panel Header */}
+              <div className={`transition-all duration-300 ${
+                sidebarCollapsed ? 'w-16' : 'w-64'
+              } bg-card/50 backdrop-blur-sm border-r border-border/50`}>
+                
+                {/* Header Controls */}
+                <div className="flex items-center justify-between p-4 border-b border-border/50">
+                  {!sidebarCollapsed && (
+                    <div className="animate-fade-in">
+                      <h3 className="font-semibold text-sm text-foreground">Navigation</h3>
+                      <p className="text-xs text-muted-foreground">Drag to reorder</p>
+                    </div>
+                  )}
+                  
+                  <div className="flex items-center gap-1">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+                      className="h-8 w-8 hover:bg-primary/10 hover:text-primary"
+                      title={sidebarCollapsed ? "Expand" : "Collapse"}
+                    >
+                      {sidebarCollapsed ? <ChevronRight className="h-3 w-3" /> : <ChevronLeft className="h-3 w-3" />}
+                    </Button>
+                    
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setPanelHidden(true)}
+                      className="h-8 w-8 hover:bg-destructive/10 hover:text-destructive"
+                      title="Hide Panel"
+                    >
+                      <PanelLeftClose className="h-3 w-3" />
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Tabs Container */}
+                <div className="p-2">
+                  <TabsList className="flex flex-col h-fit w-full bg-transparent p-0 space-y-1">
+                    {tabItems.map((item, index) => {
+                      const Icon = item.icon;
+                      return (
+                        <div
+                          key={item.value}
+                          draggable
+                          onDragStart={(e) => handleDragStart(e, index)}
+                          onDragOver={handleDragOver}
+                          onDrop={(e) => handleDrop(e, index)}
+                          className={`group w-full transition-all duration-200 ${
+                            draggedIndex === index ? 'opacity-50 scale-95 rotate-2' : 'opacity-100 scale-100'
+                          }`}
+                        >
+                          <TabsTrigger 
+                            value={item.value} 
+                            className={`${
+                              sidebarCollapsed ? 'w-12 h-12 p-0' : 'w-full h-12 px-3'
+                            } justify-start bg-background/50 hover:bg-primary/10 hover:text-primary hover:shadow-md transition-all duration-200 cursor-grab active:cursor-grabbing border border-transparent data-[state=active]:border-primary/20 data-[state=active]:bg-primary/5 data-[state=active]:shadow-sm group relative overflow-hidden`}
+                            title={sidebarCollapsed ? item.label : undefined}
+                          >
+                            {!sidebarCollapsed && (
+                              <GripVertical className="h-4 w-4 mr-2 text-muted-foreground group-hover:text-primary transition-colors opacity-0 group-hover:opacity-100" />
+                            )}
+                            
+                            <div className={`flex items-center ${sidebarCollapsed ? 'justify-center' : 'justify-start'} flex-1`}>
+                              <Icon className={`h-5 w-5 ${sidebarCollapsed ? '' : 'mr-3'} transition-all`} />
+                              {!sidebarCollapsed && (
+                                <span className="animate-fade-in font-medium text-sm truncate">{item.label}</span>
+                              )}
+                            </div>
+                            
+                            {/* Active Indicator */}
+                            <div className="absolute left-0 top-0 w-1 h-full bg-primary scale-y-0 data-[state=active]:scale-y-100 transition-transform origin-top"></div>
+                            
+                            {/* Tooltip for collapsed state */}
+                            {sidebarCollapsed && (
+                              <div className="absolute left-full ml-3 px-3 py-2 bg-popover text-popover-foreground text-sm rounded-md shadow-lg opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-50 border">
+                                {item.label}
+                                <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 w-2 h-2 bg-popover border-l border-t rotate-45"></div>
+                              </div>
+                            )}
+                          </TabsTrigger>
+                        </div>
+                      );
+                    })}
+                  </TabsList>
+                </div>
+
+                {/* Panel Footer */}
+                {!sidebarCollapsed && (
+                  <div className="p-4 border-t border-border/50 mt-auto">
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <Settings className="h-3 w-3" />
+                      <span className="animate-fade-in">Customizable layout</span>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
             
-            <div className={`flex-1 transition-all duration-300 ${panelHidden ? 'ml-[-240px]' : 'ml-0'}`}>
-              <TabsContent value="overview" className="mt-0">
+            {/* Content Area */}
+            <div className="flex-1 transition-all duration-500 min-w-0">
+              <TabsContent value="overview" className="mt-0 h-full">
                 <Dashboard />
               </TabsContent>
               
-              <TabsContent value="personal" className="mt-0">
+              <TabsContent value="personal" className="mt-0 h-full">
                 <PersonalInfoForm />
               </TabsContent>
               
-              <TabsContent value="family" className="mt-0">
+              <TabsContent value="family" className="mt-0 h-full">
                 <FamilyDetailsForm />
               </TabsContent>
               
-              <TabsContent value="banking" className="mt-0">
+              <TabsContent value="banking" className="mt-0 h-full">
                 <BankInfoForm />
               </TabsContent>
               
-              <TabsContent value="benefits" className="mt-0">
+              <TabsContent value="benefits" className="mt-0 h-full">
                 <BenefitsPackageForm />
               </TabsContent>
             </div>
