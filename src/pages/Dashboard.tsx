@@ -30,34 +30,61 @@ const DashboardPage = () => {
             </div>
           </AnimatedContainer>
           
-          <Tabs defaultValue="overview" className="w-full">
-            <TabsList className="grid w-full grid-cols-5">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="personal">Personal Info</TabsTrigger>
-              <TabsTrigger value="family">Family Details</TabsTrigger>
-              <TabsTrigger value="banking">Banking</TabsTrigger>
-              <TabsTrigger value="benefits">Benefits</TabsTrigger>
+          <Tabs defaultValue="overview" orientation="vertical" className="flex w-full gap-6">
+            <TabsList className="flex flex-col h-fit w-48 bg-background/80 backdrop-blur-sm border">
+              <TabsTrigger 
+                value="overview" 
+                className="w-full justify-start hover:bg-primary/10 hover:text-primary transition-all duration-200"
+              >
+                Overview
+              </TabsTrigger>
+              <TabsTrigger 
+                value="personal" 
+                className="w-full justify-start hover:bg-primary/10 hover:text-primary transition-all duration-200"
+              >
+                Personal Info
+              </TabsTrigger>
+              <TabsTrigger 
+                value="family" 
+                className="w-full justify-start hover:bg-primary/10 hover:text-primary transition-all duration-200"
+              >
+                Family Details
+              </TabsTrigger>
+              <TabsTrigger 
+                value="banking" 
+                className="w-full justify-start hover:bg-primary/10 hover:text-primary transition-all duration-200"
+              >
+                Banking
+              </TabsTrigger>
+              <TabsTrigger 
+                value="benefits" 
+                className="w-full justify-start hover:bg-primary/10 hover:text-primary transition-all duration-200"
+              >
+                Benefits
+              </TabsTrigger>
             </TabsList>
             
-            <TabsContent value="overview" className="mt-6">
-              <Dashboard />
-            </TabsContent>
-            
-            <TabsContent value="personal" className="mt-6">
-              <PersonalInfoForm />
-            </TabsContent>
-            
-            <TabsContent value="family" className="mt-6">
-              <FamilyDetailsForm />
-            </TabsContent>
-            
-            <TabsContent value="banking" className="mt-6">
-              <BankInfoForm />
-            </TabsContent>
-            
-            <TabsContent value="benefits" className="mt-6">
-              <BenefitsPackageForm />
-            </TabsContent>
+            <div className="flex-1">
+              <TabsContent value="overview" className="mt-0">
+                <Dashboard />
+              </TabsContent>
+              
+              <TabsContent value="personal" className="mt-0">
+                <PersonalInfoForm />
+              </TabsContent>
+              
+              <TabsContent value="family" className="mt-0">
+                <FamilyDetailsForm />
+              </TabsContent>
+              
+              <TabsContent value="banking" className="mt-0">
+                <BankInfoForm />
+              </TabsContent>
+              
+              <TabsContent value="benefits" className="mt-0">
+                <BenefitsPackageForm />
+              </TabsContent>
+            </div>
           </Tabs>
         </div>
       </main>
